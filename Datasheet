@@ -1,0 +1,95 @@
+DATASHEET FOR THE BBO CAPSTONE PROJECT DATASET
+
+MOTIVATION
+
+Why was the data set created?
+This data set was generated to support the Capstone Project within the Imperial College London Professional Certificate in Machine Learning and AI. It provides an empirical benchmark for active learning, Gaussian Process (GP) regression, and sequential black-box optimisation (BBO) algorithms across unknown, expensive-to-evaluate scalar response surfaces.
+
+What task does it support?
+The data set supports the task of iterative global optimisation under a strict evaluation budget. It records sequential parameter choices and feedback across ten distinct querying rounds, demonstrating how surrogate models identify active sub-spaces and balance exploration against exploitation.
+
+Who created the data set and who funded it?
+The underlying objective functions and evaluation environment were provided by the Imperial College London programme team. The iterative queries, candidate selections, and empirical logs were produced and documented by Dr Joseph Neary.
+
+COMPOSITION
+
+What do the instances comprise?
+The data set consists of paired coordinate vectors and scalar outputs across eight distinct synthetic or semi-synthetic functions:
+
+Function 1: 2D Spatial Plume Source Localisation (19 observations, domain [0, 1]^2)
+
+Function 2: 2D Chemical Compound Synthesis Yield (19 observations, domain [0, 1]^2)
+
+Function 3: 3D Climate Simulator Calibration (19 observations, domain [0, 1]^3)
+
+Function 4: 4D Autonomous Rover Trajectory Control (19 observations, domain [0, 1]^4)
+
+Function 5: 4D Bioreactor Vaccine Yield Maximisation (19 observations, domain [0, 1]^4)
+
+Function 6: 5D Multi-Component Formulation Blending (19 observations, domain [0, 1]^5)
+
+Function 7: 6D Hyperparameter Tuning Benchmark (19 observations, domain [0, 1]^6)
+
+Function 8: 8D High-Dimensional Systems Control (44 observations, domain [0, 1]^8)
+
+What is the format of the data?
+Data are stored as binary NumPy arrays (.npy files) in separate subdirectories for each function:
+
+initial_inputs.npy: 2D float64 array of shape (N, D) representing normalised parameter coordinates.
+
+initial_outputs.npy: 1D float64 array of shape (N,) containing evaluated scalar returns.
+
+Are there gaps, missing data, or structural biases?
+There are no missing values or corrupted fields. However, spatial coverage gaps are substantial:
+
+In high dimensions (D >= 5), N <= 44 leaves the vast majority of the unit hypercube unsampled due to the curse of dimensionality.
+
+Extreme boundary zones (coordinates < 0.05 or > 0.95) are deliberately under-represented to prevent edge-wall artefacts.
+
+Late-stage queries are densely clustered around discovered local summits, creating an intentional exploitation bias.
+
+COLLECTION PROCESS
+
+How were the queries generated?
+Queries were collected sequentially over ten iterative feedback cycles:
+
+Rounds 1-3: Baseline exploratory initialisations supplied by the course, supplemented with high-uncertainty exploration points.
+
+Rounds 4-7: Global and sub-space mapping using Gaussian Process Regressors with Automatic Relevance Determination (ARD) to separate sensitive inputs from invariant background dimensions.
+
+Rounds 8-10: Local exploitation using Expected Improvement (EI) and Upper Confidence Bound (UCB, kappa = 0.5 to 0.8), combined with Euclidean distance exclusion thresholds (delta >= 0.012 to 0.020) to prevent redundant re-sampling.
+
+Over what time frame was the data collected?
+Data points were accumulated iteratively over a 10-week period, concluding with the tenth evaluation round.
+
+What sampling mechanisms were used?
+Uniform pseudo-random Monte Carlo sampling, Latin hypercube-style interior grids, and Gaussian perturbations centered on historical maxima, subsequently filtered via GP acquisition utility.
+
+PREPROCESSING AND USES
+
+Have any transformations been applied?
+
+Coordinate inputs are normalised to the unit hypercube [0, 1]^D.
+
+Model targets are internally standardised (normalize_y=True) during GP fitting to achieve zero mean and unit variance.
+
+A regularisation nugget (alpha = 1e-3) is applied to the covariance matrix diagonal for numerical stability.
+
+What are the intended uses?
+Benchmarking sample-efficient Bayesian optimisation pipelines, evaluating ARD length-scale convergence, studying exploration-exploitation trade-offs, and validating surrogate regression models.
+
+What are inappropriate uses?
+Global surface reconstruction across the entire unit hypercube (due to severe clustering around peaks) or training algorithms designed for discrete combinatorial domains.
+
+DISTRIBUTION AND MAINTENANCE
+
+Where is the data set hosted?
+The data set is hosted in a public GitHub repository:
+https://github.com/j-m-neary/Imperial-ML-AI-Programme
+(Located in the Capstone/Data/Raw directory).
+
+What are the terms of use and licensing?
+Distributed under the MIT Academic Open Source Licence for educational and research evaluation.
+
+Who maintains the data set?
+Maintained by Dr Joseph Neary, with version history tracked via Git commits.
