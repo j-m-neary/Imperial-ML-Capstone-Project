@@ -82,7 +82,7 @@ Latin Hypercube Sampling, uniform Monte Carlo proposal pools, and local Gaussian
 
 ### Where is the dataset hosted?
 The dataset is hosted in a public GitHub repository:  
-`https://github.com/DrJNeary/Imperial-ML-Capstone-Project`  
+`https://github.com/j-m-neary/Imperial-ML-Capstone-Project`  
 (Located within the `Data/Raw/` subdirectories).
 
 ### What are the terms of use and licensing?
