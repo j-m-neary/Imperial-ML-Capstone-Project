@@ -140,7 +140,7 @@ The project is built on standard scientific Python libraries without external Au
 
 ```bash
 # Clone the repository
-git clone [https://github.com/DrJNeary/Imperial-ML-Capstone-Project.git](https://github.com/DrJNeary/Imperial-ML-Capstone-Project.git)
+git clone [https://github.com/j-m-neary/Imperial-ML-Capstone-Project)
 cd Imperial-ML-Capstone-Project
 
 # Recommended environment setup
